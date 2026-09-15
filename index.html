@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="Heterogeneous Robot Collaboration in Unstructured Environments with Grounded Generative Intelligence"/>
+  <meta name="keywords" content="Robots, LLMs, Distillation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CLUE</title>
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- TODO -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HT57S49MP2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-HT57S49MP2');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/drone.gif">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+
+
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu">
+      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+        <a class="navbar-item" href="https://zacravichandran.github.io">
+          <span class="icon">
+            <i class="fas fa-home"></i>
+          </span>
+        </a>
+
+      </div>
+
+    </div>
+  </nav>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+              <h1 class="title is-1 publication-title" style="margin-bottom: 0.5rem;">Actively Resolving Contextual Uncertainty for Underspecified  Tasks in Natural Language</h1>
+            <!-- <div class="is-size-5 publication-authors">
+              <span class="author-block">International Conference on Robotics and Automation (ICRA) 2025<br></span>
+            </div> -->
+
+            <div class="is-size-5 publication-authors" style="margin-top: 0;">
+              <span class="author-block">International Symposium on Robotics Research (ISRR) 2026<br></span>
+            </div>
+
+            <div class="is-size-5 publication-authors" style="margin-top: 1rem; margin-bottom: 0; line-height: 0.5;">
+              <span class="author-block"><br></span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://zacravichandran.github.io/">Zachary Ravichandran<sup>1</sup></a>,
+            </span>
+            <span class="author-block">
+              <a href="https://jond07.github.io/"> Jonathan Diller<sup>1</sup></a>,
+            </span>
+            <span class="author-block">
+              <a href="https://fcladera.com/">Fernando Cladera<sup>1</sup></a>,
+            </span>
+            <br>
+            <span class="author-block">
+              <a href="https://varunmurali1.github.io/">Varun Murali<sup>2</sup></a>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.georgejpappas.org/">George J. Pappas<sup>1</sup></a>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.kumarrobotics.org/">Vijay Kumar<sup>1</sup></a>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors" style="margin-top: 1rem; margin-bottom: 0;">
+            <span class="author-block"><sup>1</sup>GRASP Laboratory, University of Pennsylvania</span>
+            <br>
+            <span class="author-block"><sup>2</sup>Electrical & Computer Engineering, Texas A&M University</span>
+          </div>
+
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <!-- <a href="https://arxiv.org/abs/2506.17486" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span> -->
+                  <a href="https://arxiv.org/abs/2510.26915" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+ 
+                  </a>
+                <span class="link-block">
+                  <a href="https://github.com/KumarRobotics/SPINE-HT"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://www.youtube.com/watch?v=KIUXl_5dIUo" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                    </span>
+                    <span>Video</span>
+                  </a>
+                </span> 
+
+              </div> 
+            </div> 
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+       <div class="hero-body" style="margin-top: -4rem; margin-bottom: -3rem">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+
+          <h2 class="subtitle has-text-centered">
+             <span class="dnerf">CLUE actively resolves contextually uncertain tasks</span> 
+          </h2>
+
+            <div class="item item-fullbody">
+              <video poster="" id="fullbody" autoplay controls muted loop playsinline height="200%">
+                <source src="./static/videos/isrr_spot.mp4" type="video/mp4">
+              </video>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="hero-body">
+    <div class="container is-max-desktop">
+      <!-- abstract. -->
+      <div class="columns is-centered has-text-centered">
+
+        <div class="column is-four-fifths">
+
+
+          <h2 class="title is-3">Abstract</h2>
+          <hr style="border: 2px solid gray; width: 90%; margin: 20px auto">
+
+          <div class="content has-text-justified">
+            <p>
+              Foundation models provide robots with the ability to interpret natural language and reason about environmental context, yet most language-conditioned policies assume that goals are well-specified and that task-relevant information is provided upfront via a prior map. Operating in unfamiliar environments with underspecified tasks entails high contextual uncertainty—the robot must jointly infer what constitutes task success, what constitutes relevant information, and where (or whether) that information exists. We address these limitations via CLUE (Closed-Loop contextual Uncertainty rEsolution), a framework for actively resolving contextual uncertainty given underspecified tasks in natural language. CLUE uses an LLM-derived policy to hypothesize task-relevant concepts and potential plans. It then uses a language-embedded map, which is constructed online, to ground these hypotheses into actions. The policy sequentially evaluates hypotheses via closed-loop environment interaction and refines its plans as it gathers new information. We deploy CLUE on a Boston Dynamics Spot across three real indoor and outdoor environments spanning 15 tasks that require object disambiguation, functional inference, and occlusion reasoning. CLUE achieves a success rate within 7 percentage points of an oracle policy and outperforms an LLM-enabled planner without closed-loop feedback by a 4x margin. Supporting experiments demonstrate that simply building and then querying a language-enriched map is insufficient to resolve complex contextual planning tasks, which achieves a roughly one third success rate compared to CLUE while requiring over 10x more VLM tokens.
+            </p>
+          </div>
+          <br>
+
+
+          <h2 class="title is-3">Overview</h2>
+          <hr style="border: 2px solid gray; width: 90%; margin: 20px auto">
+
+
+        </div>
+
+
+
+
+      </div>
+
+
+      <br>
+
+      <!-- Paper video. --->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Video</h2>
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/KIUXl_5dIUo?si=wibNVlGYQl8LbS5y" frameborder="0"
+              allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+          <h2 class="title">BibTeX</h2>
+          <pre><code>@article{ravichandran_contextual_uncertainty,
+  title={Actively Resolving Contextual Uncertainty for Underspecified  Tasks in Natural Language},
+  author={Zachary Ravichandran and Jonathan Diller and Fernando Cladera and Varun Murali and George J. Pappas and Vijay Kumar}
+  year={2026},
+  journal={International Symposium on Robotics Research (ISRR)}
+}</code></pre>
+        </div>
+      </section>
+
+    <!-- <footer class="footer"> -->
+    <div class="container">
+      <div class="content has-text-centered">
+        <!-- <a class="icon-link" href="./static/videos/RoboGuard_preprint.pdf">
+          <i class="fas fa-file-pdf"></i>
+        </a> -->
+        <!-- <a class="icon-link" href="https://github.com/zacravichandran" class="external-link" disabled>
+          <i class="fab fa-github"></i>
+        </a> -->
+      </div>
+      <div class="columns is-centered">
+          <div class="content">
+            <p>
+              Webpage adapted from <a href="https://github.com/nerfies/nerfies.github.io">nerfies</a>.
+            </p>
+          </div>
+      </div>
+    </div>
+  <!-- </footer> -->
+
+
+</body>
+
+</html>
