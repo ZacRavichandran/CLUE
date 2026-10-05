@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
 
-
-
 <head>
   <meta charset="utf-8">
   <meta name="description"
-    content="Heterogeneous Robot Collaboration in Unstructured Environments with Grounded Generative Intelligence"/>
-  <meta name="keywords" content="Robots, LLMs, Distillation">
+    content="CLUE: a closed-loop framework that actively resolves contextual uncertainty for underspecified tasks in natural language, deployed on a Boston Dynamics Spot." />
+  <meta name="keywords" content="Language-driven planning, Active perception, Foundation models for robotics, Semantic mapping, Contextual uncertainty">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CLUE</title>
+  <title>CLUE: Actively Resolving Contextual Uncertainty</title>
 
+  <meta property="og:title" content="Actively Resolving Contextual Uncertainty for Underspecified Tasks in Natural Language">
+  <meta property="og:description" content="CLUE pairs an LLM-enabled policy with an online language-embedded map to resolve underspecified tasks through closed-loop interaction.">
+  <meta property="og:image" content="https://zacravichandran.github.io/CLUE/static/images/example_task.jpg">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <!-- TODO -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-HT57S49MP2"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -42,9 +44,168 @@
   <script src="./static/js/bulma-carousel.min.js"></script>
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
+
+  <style>
+    /* Figures */
+    .figure-block {
+      margin: 1.5rem auto 0.5rem auto;
+      text-align: center;
+    }
+
+    .figure-block img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .figure-caption {
+      font-size: 0.95rem;
+      color: #4a4a4a;
+      text-align: left;
+      margin-top: 0.75rem;
+      line-height: 1.5;
+    }
+
+    /* Results tables */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 1.25rem 0 0.5rem 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Bulma columns are flex items and default to min-width:auto, which lets a
+       wide table stretch the whole page instead of scrolling inside its own
+       container. Allow the column to shrink. */
+    .column.is-four-fifths {
+      min-width: 0;
+    }
+
+    /* The surrounding column is four-fifths of the container; these tables have
+       enough columns to need the rest of it, so let them break out on desktop. */
+    @media screen and (min-width: 1024px) {
+
+      .table-wrap,
+      .table-note {
+        margin-left: -12.5%;
+        margin-right: -12.5%;
+      }
+    }
+
+    table.results {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+      white-space: nowrap;
+    }
+
+    table.results th,
+    table.results td {
+      padding: 0.45rem 0.5rem;
+      text-align: center;
+      border: none;
+    }
+
+    table.results thead tr.group-head th {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #666;
+      padding-bottom: 0.15rem;
+    }
+
+    table.results thead tr:last-child th {
+      border-bottom: 2px solid #555;
+    }
+
+    table.results thead tr.group-head th.rule {
+      border-bottom: 1px solid #bbb;
+    }
+
+    table.results tbody tr {
+      border-bottom: 1px solid #e4e4e4;
+    }
+
+    table.results tbody tr:last-child {
+      border-bottom: 2px solid #555;
+    }
+
+    table.results td.method,
+    table.results th.method {
+      text-align: left;
+      font-weight: 600;
+    }
+
+    table.results tr.ours {
+      background: #f2f7fd;
+    }
+
+    table.results tr.ours td.method {
+      color: #0b4f9e;
+    }
+
+    .table-note {
+      font-size: 0.9rem;
+      color: #4a4a4a;
+      text-align: left;
+      line-height: 1.5;
+    }
+
+    /* Shown by script only when a table actually overflows its container. */
+    .scroll-hint {
+      display: none;
+      font-size: 0.82rem;
+      color: #7a7a7a;
+      text-align: left;
+      font-style: italic;
+      margin-top: 0.35rem;
+    }
+
+    /* Task cards */
+    .task-list {
+      text-align: left;
+      margin-top: 1rem;
+    }
+
+    .task-list .task {
+      padding: 0.6rem 0 0.6rem 1rem;
+      border-left: 3px solid #b8cfe8;
+      margin-bottom: 0.9rem;
+    }
+
+    .task-list .task b {
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+
+    .quote {
+      font-style: italic;
+    }
+
+    /* Bulma's .columns carries a -0.75rem side margin that is normally offset by
+       the padding of a .section. The footer block sits in a bare .container, so
+       it pushed 12px past the viewport edge. */
+    .page-footer {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+    }
+
+    /* Responsive 16:9 video embed */
+    .publication-video {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .publication-video iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
 </head>
-
-
 
 <body>
 
@@ -63,9 +224,7 @@
             <i class="fas fa-home"></i>
           </span>
         </a>
-
       </div>
-
     </div>
   </nav>
 
@@ -75,10 +234,9 @@
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column has-text-centered">
-              <h1 class="title is-1 publication-title" style="margin-bottom: 0.5rem;">Actively Resolving Contextual Uncertainty for Underspecified  Tasks in Natural Language</h1>
-            <!-- <div class="is-size-5 publication-authors">
-              <span class="author-block">International Conference on Robotics and Automation (ICRA) 2025<br></span>
-            </div> -->
+
+            <h1 class="title is-1 publication-title" style="margin-bottom: 0.5rem;">Actively Resolving Contextual
+              Uncertainty for Underspecified Tasks in Natural Language</h1>
 
             <div class="is-size-5 publication-authors" style="margin-top: 0;">
               <span class="author-block">International Symposium on Robotics Research (ISRR) 2026<br></span>
@@ -89,49 +247,49 @@
             </div>
 
             <div class="is-size-5 publication-authors">
-            <span class="author-block">
-              <a href="https://zacravichandran.github.io/">Zachary Ravichandran<sup>1</sup></a>,
-            </span>
-            <span class="author-block">
-              <a href="https://jond07.github.io/"> Jonathan Diller<sup>1</sup></a>,
-            </span>
-            <span class="author-block">
-              <a href="https://fcladera.com/">Fernando Cladera<sup>1</sup></a>,
-            </span>
-            <br>
-            <span class="author-block">
-              <a href="https://varunmurali1.github.io/">Varun Murali<sup>2</sup></a>,
-            </span>
-            <span class="author-block">
-              <a href="https://www.georgejpappas.org/">George J. Pappas<sup>1</sup></a>,
-            </span>
-            <span class="author-block">
-              <a href="https://www.kumarrobotics.org/">Vijay Kumar<sup>1</sup></a>
-            </span>
-          </div>
+              <span class="author-block">
+                <a href="https://zacravichandran.github.io/">Zachary Ravichandran<sup>1</sup></a>,
+              </span>
+              <span class="author-block">
+                <a href="https://jond07.github.io/">Jonathan Diller<sup>1</sup></a>,
+              </span>
+              <span class="author-block">
+                <a href="https://fcladera.com/">Fernando Cladera<sup>1</sup></a>,
+              </span>
+              <br>
+              <span class="author-block">
+                <a href="https://varunmurali1.github.io/">Varun Murali<sup>2</sup></a>,
+              </span>
+              <span class="author-block">
+                <a href="https://www.georgejpappas.org/">George J. Pappas<sup>1</sup></a>,
+              </span>
+              <span class="author-block">
+                <a href="https://www.kumarrobotics.org/">Vijay Kumar<sup>1</sup></a>
+              </span>
+            </div>
 
-          <div class="is-size-5 publication-authors" style="margin-top: 1rem; margin-bottom: 0;">
-            <span class="author-block"><sup>1</sup>GRASP Laboratory, University of Pennsylvania</span>
-            <br>
-            <span class="author-block"><sup>2</sup>Electrical & Computer Engineering, Texas A&M University</span>
-          </div>
+            <div class="is-size-5 publication-authors" style="margin-top: 1rem; margin-bottom: 0;">
+              <span class="author-block"><sup>1</sup>GRASP Laboratory, University of Pennsylvania</span>
+              <br>
+              <span class="author-block"><sup>2</sup>Electrical &amp; Computer Engineering, Texas A&amp;M
+                University</span>
+            </div>
 
+            <div class="is-size-6 publication-authors" style="margin-top: 0.5rem;">
+              <span class="author-block">Correspondence to <a
+                  href="mailto:zacravi@seas.upenn.edu">zacravi@seas.upenn.edu</a></span>
+            </div>
 
             <div class="column has-text-centered">
               <div class="publication-links">
                 <span class="link-block">
-                  <!-- <a href="https://arxiv.org/abs/2506.17486" class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fas fa-file-pdf"></i>
-                    </span>
-                    <span>Paper</span> -->
                   <a href="https://arxiv.org/abs/2609.30428" class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="fas fa-file-pdf"></i>
                     </span>
                     <span>Paper</span>
- 
                   </a>
+                </span>
                 <span class="link-block">
                   <a href="https://github.com/KumarRobotics/CLUE"
                     class="external-link button is-normal is-rounded is-dark">
@@ -148,124 +306,558 @@
                     </span>
                     <span>Video</span>
                   </a>
-                </span> 
-
-              </div> 
-            </div> 
+                </span>
+              </div>
+            </div>
 
           </div>
         </div>
       </div>
     </div>
 
-       <div class="hero-body" style="margin-top: -4rem; margin-bottom: -3rem">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
+    <div class="hero-body" style="margin-top: -4rem; margin-bottom: -3rem">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
 
-          <h2 class="subtitle has-text-centered">
-             <span class="dnerf">CLUE actively resolves contextually uncertain tasks</span> 
-          </h2>
+            <h2 class="subtitle has-text-centered">
+              <span class="dnerf">CLUE actively resolves contextually uncertain tasks</span>
+            </h2>
 
             <div class="item item-fullbody">
               <video poster="" id="fullbody" autoplay controls muted loop playsinline height="200%">
                 <source src="./static/videos/isrr_spot.mp4" type="video/mp4">
               </video>
             </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
+
 
   <section class="hero-body">
     <div class="container is-max-desktop">
-      <!-- abstract. -->
+
+      <!-- Abstract -->
       <div class="columns is-centered has-text-centered">
-
         <div class="column is-four-fifths">
-
 
           <h2 class="title is-3">Abstract</h2>
           <hr style="border: 2px solid gray; width: 90%; margin: 20px auto">
 
           <div class="content has-text-justified">
             <p>
-              Foundation models provide robots with the ability to interpret natural language and reason about environmental context, yet most language-conditioned policies assume that goals are well-specified and that task-relevant information is provided upfront via a prior map. Operating in unfamiliar environments with underspecified tasks entails high contextual uncertainty—the robot must jointly infer what constitutes task success, what constitutes relevant information, and where (or whether) that information exists. We address these limitations via CLUE (Closed-Loop contextual Uncertainty rEsolution), a framework for actively resolving contextual uncertainty given underspecified tasks in natural language. CLUE uses an LLM-derived policy to hypothesize task-relevant concepts and potential plans. It then uses a language-embedded map, which is constructed online, to ground these hypotheses into actions. The policy sequentially evaluates hypotheses via closed-loop environment interaction and refines its plans as it gathers new information. We deploy CLUE on a Boston Dynamics Spot across three real indoor and outdoor environments spanning 15 tasks that require object disambiguation, functional inference, and occlusion reasoning. CLUE achieves a success rate within 7 percentage points of an oracle policy and outperforms an LLM-enabled planner without closed-loop feedback by a 4x margin. Supporting experiments demonstrate that simply building and then querying a language-enriched map is insufficient to resolve complex contextual planning tasks, which achieves a roughly one third success rate compared to CLUE while requiring over 10x more VLM tokens.
+              Foundation models provide robots with the ability to interpret natural language and reason about
+              environmental context, yet most language-conditioned policies assume that goals are well-specified and
+              that task-relevant information is provided upfront via a prior map. Operating in unfamiliar environments
+              with underspecified tasks entails high contextual uncertainty&mdash;the robot must jointly infer what
+              constitutes task success, what constitutes relevant information, and where (or whether) that information
+              exists. We address these limitations via CLUE (Closed-Loop contextual Uncertainty rEsolution), a framework
+              for actively resolving contextual uncertainty given underspecified tasks in natural language. CLUE uses an
+              LLM-derived policy to hypothesize task-relevant concepts and potential plans. It then uses a
+              language-embedded map, which is constructed online, to ground these hypotheses into actions. The policy
+              sequentially evaluates hypotheses via closed-loop environment interaction and refines its plans as it
+              gathers new information. We deploy CLUE on a Boston Dynamics Spot across three real indoor and outdoor
+              environments spanning 15 tasks that require object disambiguation, functional inference, and occlusion
+              reasoning. CLUE achieves a success rate within 7 percentage points of an oracle policy and outperforms an
+              LLM-enabled planner without closed-loop feedback by a 4x margin. Supporting experiments demonstrate that
+              simply building and then querying a language-enriched map is insufficient to resolve complex contextual
+              planning tasks; these approaches achieve roughly one third the success rate of CLUE while requiring over
+              10x more VLM tokens.
             </p>
           </div>
           <br>
 
 
-          <h2 class="title is-3">Overview</h2>
-        <hr style="border: 2px solid gray; width: 90%; margin: 20px auto">
+          <!-- Motivating example -->
+          <h2 class="title is-3">Contextual uncertainty</h2>
+          <hr style="border: 2px solid gray; width: 90%; margin: 20px auto">
 
-        CLUE uses an LLM to realize underspecified language tasks in a closed-loop manner via two action types - hypothesis grounding and active information gathering. The LLM then constructs actions comprising manipulation, inspection, and navigation to resolve contextual uncertainties and make task progress. Information from the physical world is provided to the LLM via a symbolic graph-based observation space.
-        <br
-          
-          <div class="content has-text-justified; center">
-            <img src="./static/images/method.jpg" alt="" width="800">
-          </div>
- 
-
-         
-        </div>
-
-
-
-      <!-- Paper video. --->
-      <div class="columns is-centered has-text-centered">
-        
-        <div class="column is-four-fifths">
-          <h2 class="title is-3">Video</h2>
-      <hr style="border: 2px solid gray; width: 90%; margin: 20px auto">
- 
-          <div class="publication-video">
-            <iframe width="400" height="315"src="https://www.youtube.com/embed/zCmWa3-V8ro?si=FXeK1VChxcUYcX40" frameborder="0"
-              allow="autoplay; encrypted-media"></iframe>
-          </div>
-        </div>
-      </div>
-    </div>
-
-      </div>
-
-
-      <br>
-
-
-
-    <section class="section" id="BibTeX">
-        <div class="container is-max-desktop content">
-          <h2 class="title">BibTeX</h2>
-          <pre><code>@article{ravichandran_contextual_uncertainty,
-  title={Actively Resolving Contextual Uncertainty for Underspecified  Tasks in Natural Language},
-  author={Zachary Ravichandran and Jonathan Diller and Fernando Cladera and Varun Murali and George J. Pappas and Vijay Kumar}
-  year={2026},
-  journal={International Symposium on Robotics Research (ISRR)}
-}</code></pre>
-        </div>
-      </section>
-
-    <!-- <footer class="footer"> -->
-    <div class="container">
-      <div class="content has-text-centered">
-        <!-- <a class="icon-link" href="./static/videos/RoboGuard_preprint.pdf">
-          <i class="fas fa-file-pdf"></i>
-        </a> -->
-        <!-- <a class="icon-link" href="https://github.com/zacravichandran" class="external-link" disabled>
-          <i class="fab fa-github"></i>
-        </a> -->
-      </div>
-      <div class="columns is-centered">
-          <div class="content">
+          <div class="content has-text-justified">
             <p>
-              Webpage adapted from <a href="https://github.com/nerfies/nerfies.github.io">nerfies</a>.
+              Consider a robot placed in an unfamiliar area and tasked to <span class="quote">&ldquo;locate the barrel
+                with the hazardous content.&rdquo;</span> Resolving this specification requires addressing several
+              coupled forms of uncertainty, which we refer to as <i>contextual uncertainty</i>:
+            </p>
+            <ul>
+              <li><b>Semantic</b> &mdash; which entities are task-relevant, and what constitutes task success. What
+                counts as a hazard?</li>
+              <li><b>Metric</b> &mdash; where those entities are located, and hence which actions are feasible.</li>
+              <li><b>Functional</b> &mdash; which physical interactions are required to make progress. A tarp may have
+                to be removed before a referent can be inspected.</li>
+            </ul>
+            <p>
+              Resolving these amounts to maintaining a belief jointly over the goal conditions, the state, and the
+              feasible action set, updated as observations arrive. Because that belief is intractable to maintain
+              exactly in an open-vocabulary setting, CLUE approximates it with a symbolic <i>hypothesis state</i>: a
+              running account of what has been confirmed, what has been hypothesized but not verified, what has been
+              ruled out, and which uncertainties remain.
             </p>
           </div>
+
+          <div class="figure-block">
+            <img src="./static/images/example_task.jpg"
+              alt="Example task: the robot identifies a hazardous barrel by grounding candidates from a language-embedded map, inspecting them, and removing tarps that occlude two of them.">
+            <p class="figure-caption">
+              <b>Example task.</b> The robot must identify a hazardous barrel, but it does not know barrel locations or
+              what constitutes a hazard <i>a priori</i>. It uses a language-embedded map constructed from RGB-D data to
+              identify possible barrel locations. It rules out one as a false positive upon inspection. The other two
+              candidates are barrels but are occluded by tarps. The robot removes the tarps, reads the signs hidden
+              underneath, and finds the third barrel contains dangerous chemicals.
+            </p>
+          </div>
+          <br>
+
+
+          <!-- Overview -->
+          <h2 class="title is-3">Overview</h2>
+          <hr style="border: 2px solid gray; width: 90%; margin: 20px auto">
+
+          <div class="content has-text-justified">
+            <p>
+              CLUE uses an LLM to realize underspecified language tasks in a closed-loop manner via two action
+              types&mdash;hypothesis grounding and active information gathering. The LLM then constructs actions
+              comprising manipulation, inspection, and navigation to resolve contextual uncertainties and make task
+              progress. Information from the physical world is provided to the LLM via a symbolic graph-based
+              observation space.
+            </p>
+            <p>
+              CLUE maintains two levels of abstraction. The <b>language-embedded map</b> is a dense voxel map whose
+              feature embeddings are accumulated online from RGB-D imagery and can be queried for semantic relevance; it
+              serves as perceptual memory. The <b>observation graph</b> is a sparse symbolic abstraction over that map,
+              comprising object and region nodes annotated with coordinates and natural-language attributes, which is
+              what the policy actually reads. A node's description evolves over an episode: a barrel may begin as
+              <span class="quote">&ldquo;candidate location from language-embedded map,&rdquo;</span> become
+              <span class="quote">&ldquo;occluded by tarp,&rdquo;</span> and end as
+              <span class="quote">&ldquo;sign indicates barrel contains water.&rdquo;</span>
+            </p>
+          </div>
+
+          <div class="figure-block">
+            <img src="./static/images/method.jpg"
+              alt="CLUE architecture: an LLM policy alternates between hypothesis grounding against a language-embedded map and active information gathering through manipulation, inspection, and navigation.">
+            <p class="figure-caption">
+              <b>CLUE architecture.</b> CLUE uses an LLM as a policy to realize underspecified language tasks in a
+              closed-loop manner via two action types&mdash;hypothesis grounding and active information gathering. The
+              LLM then constructs actions comprising manipulation, inspection, and navigation to resolve contextual
+              uncertainties and make task progress. Information from the physical world is provided to the LLM via a
+              symbolic graph-based observation space.
+            </p>
+          </div>
+          <br>
+
+
+          <!-- Hypothesis grounding -->
+          <h2 class="title is-3">Hypothesis grounding</h2>
+          <hr style="border: 2px solid gray; width: 90%; margin: 20px auto">
+
+          <div class="content has-text-justified">
+            <p>
+              Grounding turns a hypothesis into concrete planning objectives. The policy identifies a task-relevant
+              concept and queries the map: the concept is encoded into a feature vector, cosine similarity is computed
+              against every voxel, and the score is normalized with a softmax over background concepts (e.g.
+              <span class="quote">&ldquo;object,&rdquo;</span> <span class="quote">&ldquo;ground,&rdquo;</span>
+              <span class="quote">&ldquo;wall&rdquo;</span>) to yield an interpretable confidence. Retained voxels are
+              clustered with DBSCAN into candidates, each with a centroid, size, and average confidence.
+            </p>
+            <p>
+              For each candidate above threshold, CLUE computes a viewpoint along the line between the robot's current
+              pose and the target at a fixed viewing distance, snapped to the nearest unoccupied point in freespace.
+              Candidates and viewpoints enter the observation graph as object and region nodes, accompanied by a
+              minimum-distance inspection tour computed by solving a TSP over the candidates. That tour is a hint rather
+              than a plan: it may omit necessary preconditions, such as navigating to a viewpoint or clearing an
+              occlusion before inspection.
+            </p>
+            <p>
+              If the map's embeddings are not precise enough to ground a hypothesis&mdash;the task calls for a
+              <span class="quote">&ldquo;red backpack&rdquo;</span> but only <span class="quote">&ldquo;bag&rdquo;</span>
+              is identifiable&mdash;the policy may broaden its query and try again.
+            </p>
+          </div>
+
+          <div class="figure-block">
+            <img src="./static/images/grounding.jpg"
+              alt="Hypothesis grounding pipeline: sensor data builds a language-embedded map, a concept query yields thresholded relevancy, voxels are clustered into candidates, viewpoints are found, and a textual observation is emitted.">
+            <p class="figure-caption">
+              <b>Hypothesis grounding.</b> Sensory data is used to construct a language-embedded map. Given a concept
+              from the policy's hypothesis, candidate entities are identified by finding high-relevancy voxels and
+              clustering. Viewpoints from which the candidates may be observed are identified via the map's occupancy
+              grid. These candidates and viewpoints form a graph which is provided to the policy via a textual
+              observation along with a minimum distance visitation order.
+            </p>
+          </div>
+          <br>
+
+
+          <!-- Experimental setup -->
+          <h2 class="title is-3">Experimental setup</h2>
+          <hr style="border: 2px solid gray; width: 90%; margin: 20px auto">
+
+          <div class="content has-text-justified">
+            <p>
+              We evaluate on fifteen tasks across two indoor environments and the outside of an office park, providing
+              experimental areas of roughly 100&nbsp;m&sup2;, 250&nbsp;m&sup2;, and 1,000&nbsp;m&sup2;. Nine tasks are
+              run in the laboratory environment, three on a floor of the office building, and three outdoors. Each task
+              is evaluated once.
+            </p>
+          </div>
+
+          <div class="figure-block">
+            <img src="./static/images/envs.jpg"
+              alt="Experimental snapshots of the three evaluation environments: two indoor settings and one outdoor setting.">
+            <p class="figure-caption">
+              <b>Evaluation environments.</b> Two indoor settings and one outdoor setting.
+            </p>
+          </div>
+
+          <div class="content task-list">
+            <div class="task">
+              <b>Object disambiguation</b>
+              Identify a specific description of an object, such as a Jansport bag. The map's feature embeddings do not
+              provide sufficient detail to locate it, and the map may contain false positives, so CLUE must gather
+              candidate inspection locations and verify them online.
+            </div>
+            <div class="task">
+              <b>Functional inference</b>
+              Infer entities matching desired functional attributes. Given <span class="quote">&ldquo;I need something
+                to transport equipment for field experiments. Ideally with a perch for my laptop,&rdquo;</span> CLUE
+              must identify a cart for transport and some supporting structure for the laptop.
+            </div>
+            <div class="task">
+              <b>Occlusion reasoning</b>
+              Recognize when an object of interest may be occluded and physically resolve that occlusion before it can
+              be inspected.
+            </div>
+          </div>
+
+          <div class="content has-text-justified">
+            <p>
+              We compare against two baselines. An <b>oracle</b> receives step-by-step instructions on how to solve the
+              task but otherwise shares CLUE's action space, estimating an upper bound on performance.
+              <b>NLMaps</b> has access to the same language-embedded map and action space but assumes map queries are
+              noiseless, so it must generate an open-loop plan; it measures the importance of closed-loop feedback.
+            </p>
+          </div>
+          <br>
+
+
+          <!-- Results -->
+          <h2 class="title is-3">Results</h2>
+          <hr style="border: 2px solid gray; width: 90%; margin: 20px auto">
+
+          <div class="content has-text-justified">
+            <p>
+              CLUE reaches an <b>86.7%</b> success rate, within 7 percentage points of the oracle's 93.3%, and over four
+              times NLMaps' 20%.
+            </p>
+          </div>
+
+          <div class="table-wrap">
+            <table class="results">
+              <thead>
+                <tr class="group-head">
+                  <th class="method"></th>
+                  <th class="rule" colspan="4">Success</th>
+                  <th colspan="6"></th>
+                </tr>
+                <tr>
+                  <th class="method">Method</th>
+                  <th>Dis.</th>
+                  <th>Func.</th>
+                  <th>Occl.</th>
+                  <th>Overall</th>
+                  <th>Actions</th>
+                  <th>Time (s)</th>
+                  <th>LLM Calls</th>
+                  <th>LLM Tok. (k)</th>
+                  <th>VLM Calls</th>
+                  <th>VLM Tok. (k)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="method">Oracle</td>
+                  <td>83.3%</td>
+                  <td>100.0%</td>
+                  <td>100.0%</td>
+                  <td>93.3%</td>
+                  <td>4.3&plusmn;1.0</td>
+                  <td>175.4&plusmn;62.0</td>
+                  <td>4.4&plusmn;1.2</td>
+                  <td>2.3&plusmn;8.0</td>
+                  <td>1.1&plusmn;0.5</td>
+                  <td>0.9&plusmn;0.4</td>
+                </tr>
+                <tr class="ours">
+                  <td class="method">CLUE (ours)</td>
+                  <td>83.3%</td>
+                  <td>100.0%</td>
+                  <td>66.7%</td>
+                  <td>86.7%</td>
+                  <td>8.1&plusmn;4.9</td>
+                  <td>222.9&plusmn;120.6</td>
+                  <td>6.3&plusmn;3.6</td>
+                  <td>5.7&plusmn;5.2</td>
+                  <td>2.9&plusmn;2.1</td>
+                  <td>2.1&plusmn;1.7</td>
+                </tr>
+                <tr>
+                  <td class="method">NLMaps</td>
+                  <td>16.7%</td>
+                  <td>33.3%</td>
+                  <td>0.0%</td>
+                  <td>20.0%</td>
+                  <td>4.3&plusmn;1.2</td>
+                  <td>115.2&plusmn;58.4</td>
+                  <td>3.4&plusmn;0.8</td>
+                  <td>1.2&plusmn;4.6</td>
+                  <td>0.9&plusmn;0.6</td>
+                  <td>0.5&plusmn;0.3</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="scroll-hint">Scroll the table sideways to see all columns.</p>
+          <p class="table-note">
+            Mean and standard deviation across fifteen real-world experiments, with success broken down by task type:
+            object disambiguation (Dis.), functional inference (Func.), and occlusion reasoning (Occl.).
+          </p>
+
+          <div class="content has-text-justified" style="margin-top: 1.25rem;">
+            <p>
+              CLUE's resource usage is higher than the oracle's: 1.3x the time with nearly 2x the actions, 1.4x the LLM
+              calls with 2.5x the LLM tokens, and 2.6x the VLM calls with 2.3x the VLM tokens. This is the cost of
+              resolving false positives and distractors in the map, which the oracle avoids because it receives ground
+              truth instructions.
+            </p>
+            <p>
+              CLUE's two failure modes were contextual inference and behavior execution. In one case, given
+              <span class="quote">&ldquo;I need something to carry my robot outside,&rdquo;</span> the policy suggested
+              a packing box rather than a cart. In another, the robot failed to grasp a task-relevant object. NLMaps
+              failed primarily on false positives in its initial map query: assuming that result was correct, it had no
+              mechanism to recover, and simply stopped on reaching one. That is also why its resource usage is
+              comparatively low.
+            </p>
+          </div>
+
+          <div class="figure-block">
+            <img src="./static/images/qualitative.jpg"
+              alt="Qualitative comparison: CLUE sequentially inspects three candidates and reasons about functional use, while NLMaps visits only one candidate, which is a false positive.">
+            <p class="figure-caption">
+              <b>Qualitative results.</b> Our method sequentially inspects candidates derived from the map, reasoning
+              about functional use until it arrives at a suitable object. NLMaps only visits one candidate, which is a
+              false positive.
+            </p>
+          </div>
+          <br>
+
+
+          <!-- Map retrieval -->
+          <h2 class="title is-3">Does information retrieval on a map suffice?</h2>
+          <hr style="border: 2px solid gray; width: 90%; margin: 20px auto">
+
+          <div class="content has-text-justified">
+            <p>
+              We compare CLUE to DAAAM, a scene understanding framework that forgoes a dense language-embedded map in
+              favor of an explicitly segmented scene graph, and that uses a VLM to caption objects and regions during
+              map construction. Because DAAAM does not receive a prior task, those captions are descriptive but generic.
+              We build a map from the sensory data collected during the experiments above, then provide DAAAM's agentic
+              retrieval tool with the task specification, across the nine laboratory tasks.
+            </p>
+          </div>
+
+          <div class="table-wrap">
+            <table class="results">
+              <thead>
+                <tr class="group-head">
+                  <th class="method"></th>
+                  <th class="rule" colspan="4">Success</th>
+                  <th colspan="4"></th>
+                </tr>
+                <tr>
+                  <th class="method">Method</th>
+                  <th>Dis.</th>
+                  <th>Func.</th>
+                  <th>Occl.</th>
+                  <th>Overall</th>
+                  <th>LLM Calls</th>
+                  <th>LLM Tok. (k)</th>
+                  <th>VLM Calls</th>
+                  <th>VLM Tok. (k)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="ours">
+                  <td class="method">CLUE (ours)</td>
+                  <td>66.7%</td>
+                  <td>100.0%</td>
+                  <td>66.7%</td>
+                  <td>77.8%</td>
+                  <td>5.2&plusmn;3.1</td>
+                  <td>4.2&plusmn;4.4</td>
+                  <td>1.9&plusmn;1.3</td>
+                  <td>1.4&plusmn;1.2</td>
+                </tr>
+                <tr>
+                  <td class="method">DAAAM</td>
+                  <td>33.3%</td>
+                  <td>33.3%</td>
+                  <td>0.0%</td>
+                  <td>22.2%</td>
+                  <td>2.1&plusmn;0.6</td>
+                  <td>3.4&plusmn;0.7</td>
+                  <td>5.4&plusmn;0.5</td>
+                  <td>17.1&plusmn;2.4</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="scroll-hint">Scroll the table sideways to see all columns.</p>
+          <p class="table-note">
+            Mean and standard deviation across nine real-world experiments in the laboratory environment.
+          </p>
+
+          <div class="content has-text-justified" style="margin-top: 1.25rem;">
+            <p>
+              DAAAM's failure modes were contextual imprecision, where the map lacked the information needed to
+              disambiguate objects; false negative detections that prevented task-relevant object retrieval; and an
+              inability to resolve occlusions. CLUE issues over twice as many LLM calls, since it repeatedly generates
+              new plans, but requires only 1.2x as many LLM tokens&mdash;DAAAM's agent needs the entire scene graph,
+              which is far larger than CLUE's symbolic observation space. Because DAAAM captions every observed object
+              rather than only contextually relevant ones, it uses over 2.8x the VLM calls and 12x the VLM tokens.
+            </p>
+          </div>
+          <br>
+
+
+          <!-- Path hints -->
+          <h2 class="title is-3">Can LLMs provide informative paths?</h2>
+          <hr style="border: 2px solid gray; width: 90%; margin: 20px auto">
+
+          <div class="content has-text-justified">
+            <p>
+              We assess the value of the TSP-generated hint by comparing CLUE against an ablation that does not receive
+              one, an LLM prompted directly to produce a distance-efficient path, and the TSP solution itself. Each
+              method plans over waypoints randomly sampled from a 10&times;10 grid, corresponding to candidates from the
+              grounding process.
+            </p>
+          </div>
+
+          <div class="figure-block">
+            <img src="./static/images/planning_performance.png"
+              alt="Distance ratio to the TSP solution versus number of waypoints, comparing TSP, CLUE without hint, a path-planning LLM, and CLUE.">
+            <p class="figure-caption">
+              <b>LLM ability to plan distance-efficient paths</b> (mean and std.)
+            </p>
+          </div>
+
+          <div class="content has-text-justified">
+            <p>
+              The path-prompted LLM rivals the TSP. Without a TSP hint, however, our policy's LLM produces significantly
+              longer paths&mdash;over 1.5 times as long for six or more points. This degradation is likely due to the
+              system instructions focusing the LLM's attention on making contextual associations rather than producing
+              distance-efficient paths. Future work is required to develop generation structures that enable both
+              reasoning and efficient path assignment.
+            </p>
+          </div>
+          <br>
+
+
+          <!-- Implementation -->
+          <h2 class="title is-3">Implementation</h2>
+          <hr style="border: 2px solid gray; width: 90%; margin: 20px auto">
+
+          <div class="content has-text-justified">
+            <p>
+              The mapping framework extends RayFronts with the RadSeg feature encoder. We use SciPy's DBSCAN
+              implementation and a TSP solver built on Gurobi. The policy and its VLM are implemented with GPT-5.1 using
+              <span class="quote">&ldquo;low&rdquo;</span> reasoning. The policy instantiates six behaviors:
+              <code>goto()</code>, <code>inspect()</code>, <code>grasp()</code>, <code>place()</code>,
+              <code>query()</code>, and <code>answer()</code>.
+            </p>
+            <p>
+              All experiments run on a Boston Dynamics Spot equipped with a forward-facing ZED 2i camera for RGB and
+              depth sensing and an NVIDIA Jetson AGX Thor for compute, with odometry from internal state estimation.
+              Mobility relies on Nav2 for trajectory planning and the Spot's internal controller for velocity tracking;
+              grasping and placement use the Spot SDK. GPT-5.1 is queried over a network connection, and all other
+              processes run onboard.
+            </p>
+          </div>
+          <br>
+
+        </div>
+      </div>
+
+
+      <!-- Paper video -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Video</h2>
+          <hr style="border: 2px solid gray; width: 90%; margin: 20px auto">
+
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/zCmWa3-V8ro?si=FXeK1VChxcUYcX40" frameborder="0"
+              allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <br>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{ravichandran_contextual_uncertainty,
+  title={Actively Resolving Contextual Uncertainty for Underspecified Tasks in Natural Language},
+  author={Zachary Ravichandran and Jonathan Diller and Fernando Cladera and Varun Murali and George J. Pappas and Vijay Kumar},
+  year={2026},
+  journal={International Symposium on Robotics Research (ISRR)},
+  eprint={2609.30428},
+  archivePrefix={arXiv},
+  primaryClass={cs.RO}
+}</code></pre>
+    </div>
+  </section>
+
+  <div class="container page-footer">
+    <div class="columns is-centered">
+      <div class="content">
+        <p>
+          Webpage adapted from <a href="https://github.com/nerfies/nerfies.github.io">nerfies</a>.
+        </p>
       </div>
     </div>
-  <!-- </footer> -->
+  </div>
 
+  <script>
+    // Show "scroll sideways" only on tables that genuinely overflow at the
+    // current width, so the hint never appears on a table that already fits.
+    (function () {
+      function sync() {
+        document.querySelectorAll('.table-wrap').forEach(function (wrap) {
+          // Both tables share a parent, so match the hint that immediately
+          // follows this wrapper rather than the first one in the subtree.
+          var hint = wrap.nextElementSibling;
+          if (!hint || !hint.classList.contains('scroll-hint')) return;
+          hint.style.display = wrap.scrollWidth > wrap.clientWidth + 1 ? 'block' : 'none';
+        });
+      }
+      window.addEventListener('load', sync);
+      window.addEventListener('resize', sync);
+      // Fonts and images settle after first paint and change table width, so
+      // re-check whenever a container is actually resized.
+      if (window.ResizeObserver) {
+        var ro = new ResizeObserver(sync);
+        document.querySelectorAll('.table-wrap').forEach(function (w) { ro.observe(w); });
+      }
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(sync);
+      sync();
+    })();
+  </script>
 
 </body>
 
